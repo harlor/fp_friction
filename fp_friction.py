@@ -1,3 +1,5 @@
+#!/sbin/env python
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -97,46 +99,38 @@ def lin_scaling(v):
 
 dx = 0.001
 
-u_hb  = 30.0
-f_max = 300.0
+u_hb  = 300.0
+f_max = 30.0
 v0 = 2 * np.pi * u_hb * np.exp(-u_hb)
-print('v0=%s' % str(v0))
+# print('v0=%s' % str(v0))
 
 
 num = 1000
 f = np.geomspace(f_max/num, f_max, num)
 # v01 = 1 / s(f, u01, dx) / v0
 # v05 = 1 / s(f, u05, dx) / v0
-s_ = s(f, u1, dx)
-# s__ = s_f(f, u1, dx)
-vf = 1.0 / s_ / v0
-# v1 = 1.0 / s(f, u1, dx) / v0
-# v2 = 1 / s(f, u2, dx) / v0
-# v10 = 1 / s(f, u10, dx) / v0
+s1 = s(f, u1, dx)
+s2 = s(f, u2, dx)
+s10 = s(f, u10, dx)
+v1 = 1.0 / s(f, u1, dx) / v0
+v2 = 1 / s(f, u2, dx) / v0
+v10 = 1 / s(f, u10, dx) / v0
 
-# plt.plot(f, u(f))
-# plt.show()
-
-
-plt.loglog(f, f * s_, label='foo')
-# plt.loglog(f, f * s__, label='f >> 1')
+plt.loglog(f, f * s1, label='$\\tilde{U}_{HB}=%d\,\,\, \\beta=%d$' % (u_hb, 1))
+plt.loglog(f, f * s2, label='$\\tilde{U}_{HB}=%d\,\,\, \\beta=%d$' % (u_hb, 2))
+plt.loglog(f, f * s10, label='$\\tilde{U}_{HB}=%d\,\,\, \\beta=%d$' % (u_hb, 10))
+plt.xlabel('$F/F_0$')
+plt.ylabel('$\\gamma/\\gamma_0$')
 plt.legend()
 plt.show()
 
-# plt.loglog(v1, f, label='f >> 1')
-# plt.loglog(v2, f, label='solution $\\beta=$1')
-# plt.legend()
-# plt.show()
-
-# vs = v1
-# plt.loglog(vs, log_scaling(vs), label='log')
-# plt.loglog(v1, lin_scaling(v1 * v0), label='lin')
-# plt.loglog(v1, f, label='solution $\\beta=$1')
-# plt.loglog(vf, f, label='f >> 1')
-# plt.xlabel('$v/v_0$')
-# plt.ylabel('$F/F_0$')
-# plt.legend()
-# plt.show()
+plt.loglog(v1, log_scaling(v1), label='log')
+plt.loglog(v1, lin_scaling(v1 * v0), label='lin')
+plt.loglog(v1, f, label='solution $\\beta=$1')
+plt.xlabel('$v/v_0$')
+plt.ylabel('$F/F_0$')
+plt.legend()
+plt.show()
 
 
 # x = np.arange(-1, 1, 0.01)
@@ -150,15 +144,14 @@ plt.show()
 # plt.legend()
 # plt.show()
 #
-# plt.loglog(v01, f, label='solution $\\beta=$0.1')
-# plt.loglog(v05, f, label='solution $\\beta=$0.5')
-# plt.loglog(v1, f, label='solution $\\beta=$1')
-# plt.loglog(v2, f, label='solution $\\beta=$2')
-# plt.loglog(v10, f, label='solution $\\beta=$10')
-# plt.xlabel('$v/v_0$')
-# plt.ylabel('$F/F_0$')
-# plt.legend()
-# plt.show()
+
+plt.loglog(v1, f, label='solution $\\beta=$1')
+plt.loglog(v2, f, label='solution $\\beta=$2')
+plt.loglog(v10, f, label='solution $\\beta=$10')
+plt.xlabel('$v/v_0$')
+plt.ylabel('$F/F_0$')
+plt.legend()
+plt.show()
 #
 # plt.loglog(f, f/v01, label='solution $\\beta=$0.1')
 # plt.loglog(f, f/v05, label='solution $\\beta=$0.5')
